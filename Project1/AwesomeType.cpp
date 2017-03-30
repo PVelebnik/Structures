@@ -43,11 +43,11 @@ AwesomeType::AwesomeType(AwesomeType&& other)
 	other.m_type = TYPES::UNDEFINED;
 }
 
-AwesomeType::~AwesomeType()
+void AwesomeType::DestroyObject(AwesomeType& value)
 {
-
+	memset(value.m_value, 0, 64);
+	value.m_type = TYPES::UNDEFINED;
 }
-
 
 void AwesomeType::Swap(AwesomeType& first, AwesomeType& second)
 {

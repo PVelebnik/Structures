@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include <exception>
 
 //#define ReturnIfSame(x, y) \
 //if(std::is_same<T, x>::value) return y
@@ -73,13 +74,13 @@ public:
 	AwesomeType(T value);
 	AwesomeType(const AwesomeType& other);
 	AwesomeType(AwesomeType&& other);
-	~AwesomeType();
 
 	AwesomeType& operator = (const AwesomeType& other);
 	AwesomeType& operator=(AwesomeType&& other);
 
 	template <typename T>
 	T ReadValueAs();
+	void DestroyObject(AwesomeType& value);
 	static void Swap(AwesomeType& first, AwesomeType& second);
 
 private:
@@ -91,9 +92,9 @@ template <typename T>
 AwesomeType::AwesomeType(T value)
 	: m_type(TypeDetector(value))
 {
-	memcpy(m_value, &value, sizeof(T));
 	static_assert(!std::is_null_pointer<T>::value, "Invalid value! nullptr_t cannot be an input type");
 	static_assert(!std::is_void<T>::value, "Invalid value! void cannot be an input type");
+	memcpy(m_value, &value, sizeof(T));
 }
 
 template <typename T>
