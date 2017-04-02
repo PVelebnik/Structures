@@ -112,9 +112,12 @@
   <ItemGroup>
     <ClCompile Include="AwesomeType.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AwesomeType.h" />
+    <ClInclude Include="BadCast.h" />
+    <ClInclude Include="Tests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

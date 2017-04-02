@@ -2,12 +2,15 @@
 #include <iostream>
 #include <fstream>
 #include <exception>
+#include <array>
+#include "BadCast.h"
 
 //#define ReturnIfSame(x, y) \
 //if(std::is_same<T, x>::value) return y
 
 enum class TYPES
 {
+	UNDEFINED,
 	BOOL,
 	CHAR,
 	UNSIGNED_CHAR,
@@ -22,8 +25,7 @@ enum class TYPES
 	UNSIGNED_LONG_LONG_INT,
 	FLOAT,
 	DOUBLE,
-	LONG_DOUBLE,
-	UNDEFINED
+	LONG_DOUBLE
 };
 
 template <typename T>
@@ -80,11 +82,12 @@ public:
 
 	template <typename T>
 	T ReadValueAs();
-	void DestroyObject(AwesomeType& value);
+	static void DestroyObject(AwesomeType& value);
 	static void Swap(AwesomeType& first, AwesomeType& second);
+	TYPES GetType() { return m_type; }
 
 private:
-	char m_value[8];
+	std::array<char, 8> m_value;
 	TYPES m_type;
 };
 
@@ -94,7 +97,8 @@ AwesomeType::AwesomeType(T value)
 {
 	static_assert(!std::is_null_pointer<T>::value, "Invalid value! nullptr_t cannot be an input type");
 	static_assert(!std::is_void<T>::value, "Invalid value! void cannot be an input type");
-	memcpy(m_value, &value, sizeof(T));
+	static_assert((std::is_integral<T>::value || std::is_floating_point<T>::value), "Unsupported type");
+	memcpy(m_value.data(), &value, sizeof(T));
 }
 
 template <typename T>
@@ -102,7 +106,7 @@ T AwesomeType::ReadValueAs()
 {
 	if (TypeDetector(T()) == m_type)
 	{
-		return *((T*)m_value);
+		return *(reinterpret_cast<T*>(m_value.data()));
 	}
-	throw;
+	throw BadCast();
 }
