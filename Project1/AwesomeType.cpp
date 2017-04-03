@@ -48,7 +48,9 @@ void AwesomeType::DestroyObject(AwesomeType& value)
 
 void AwesomeType::Swap(AwesomeType& first, AwesomeType& second)
 {
-	if(first.m_value!=second.m_value)
+	if (&first.m_value != &second.m_value)
+	{
 		std::swap(first.m_value, second.m_value);
 		std::swap(first.m_type, second.m_type);
+	}
 }

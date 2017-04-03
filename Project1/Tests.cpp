@@ -64,7 +64,7 @@ void TestTypeDetector()
 {
 	std::cout << "TestTypeDetector:" << std::endl;
 
-	ARE_EQ(TYPES::CHAR, TypeDetector('c'));
+	ARE_EQ(TYPES::CHAR, TypeDetector<char>());
 }
 
 void TestDestroy()

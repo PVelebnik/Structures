@@ -29,7 +29,7 @@ enum class TYPES
 };
 
 template <typename T>
-TYPES TypeDetector(T)
+TYPES TypeDetector()
 {
 	//ReturnIfSame(bool, TYPES::BOOL);
 
@@ -93,7 +93,7 @@ private:
 
 template <typename T>
 AwesomeType::AwesomeType(T value)
-	: m_type(TypeDetector(value))
+	: m_type(TypeDetector<T>())
 {
 	static_assert(!std::is_null_pointer<T>::value, "Invalid value! nullptr_t cannot be an input type");
 	static_assert(!std::is_void<T>::value, "Invalid value! void cannot be an input type");
@@ -104,7 +104,7 @@ AwesomeType::AwesomeType(T value)
 template <typename T>
 T AwesomeType::ReadValueAs()
 {
-	if (TypeDetector(T()) == m_type)
+	if (TypeDetector<T>() == m_type)
 	{
 		return *(reinterpret_cast<T*>(m_value.data()));
 	}
