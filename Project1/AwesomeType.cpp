@@ -1,8 +1,8 @@
 #include "AwesomeType.h"
 
 AwesomeType:: AwesomeType()
-	:m_type(TYPES::UNDEFINED)
-	, m_value()
+	:type(Types::Undefined)
+	, value()
 {
 }
 
@@ -11,8 +11,8 @@ AwesomeType& AwesomeType::operator=(const AwesomeType& other)
 {
 	if (this != &other)
 	{
-		m_value = other.m_value;
-		m_type = other.m_type;
+		value = other.value;
+		type = other.type;
 	}
 	return*this;
 }
@@ -21,36 +21,36 @@ AwesomeType& AwesomeType::operator=(AwesomeType&& other)
 {
 	if (this != &other)
 	{
-		m_value = std::move(other.m_value);
-		m_type = std::move(other.m_type);
-		other.m_type = TYPES::UNDEFINED;
+		value = std::move(other.value);
+		type = std::move(other.type);
+		other.type = Types::Undefined;
 	}
 	return *this;
 }
 
 AwesomeType::AwesomeType(const AwesomeType& other)
-	: m_value(other.m_value)
-	, m_type(other.m_type)
+	: value(other.value)
+	, type(other.type)
 {
 }
 
 AwesomeType::AwesomeType(AwesomeType&& other)
-	: m_value(std::move(other.m_value))
-	, m_type(std::move(other.m_type))
+	: value(std::move(other.value))
+	, type(std::move(other.type))
 {
-	other.m_type = TYPES::UNDEFINED;
+	other.type = Types::Undefined;
 }
 
 void AwesomeType::DestroyObject(AwesomeType& value)
 {
-	value.m_type = TYPES::UNDEFINED;
+	value.type = Types::Undefined;
 }
 
 void AwesomeType::Swap(AwesomeType& first, AwesomeType& second)
 {
-	if (&first.m_value != &second.m_value)
+	if (&first.value != &second.value)
 	{
-		std::swap(first.m_value, second.m_value);
-		std::swap(first.m_type, second.m_type);
+		std::swap(first.value, second.value);
+		std::swap(first.type, second.type);
 	}
 }

@@ -1,70 +1,70 @@
 #pragma once
+#include "BadCast.h"
 #include <iostream>
 #include <fstream>
 #include <exception>
 #include <array>
-#include "BadCast.h"
 
 //#define ReturnIfSame(x, y) \
 //if(std::is_same<T, x>::value) return y
 
-enum class TYPES
+enum class Types
 {
-	UNDEFINED,
-	BOOL,
-	CHAR,
-	UNSIGNED_CHAR,
-	WCHAR_T,
-	INT,
-	UNSIGNED_INT,
-	SHORT_INT,
-	UNSIGNED_SHORT_INT,
-	LONG_INT,
-	UNSIGNED_LONG_INT,
-	LONG_LONG_INT,
-	UNSIGNED_LONG_LONG_INT,
-	FLOAT,
-	DOUBLE,
-	LONG_DOUBLE
+	Undefined,
+	Bool,
+	Char,
+	UnsignedChar,
+	WcharT,
+	Int,
+	UnsignedInt,
+	ShortInt,
+	UnsignedShortInt,
+	LongInt,
+	UnsignedLongInt,
+	LongLongInt,
+	UnsignedLongLongInt,
+	Float,
+	Double,
+	LongDouble
 };
 
 template <typename T>
-TYPES TypeDetector()
+Types TypeDetector()
 {
 	//ReturnIfSame(bool, TYPES::BOOL);
 
 	if (std::is_same<T, bool>::value)
-		return TYPES::BOOL;
+		return Types::Bool;
 	if (std::is_same<T, char>::value)
-		return TYPES::CHAR;
+		return Types::Char;
 	if (std::is_same<T, unsigned char>::value)
-		return TYPES::UNSIGNED_CHAR;
+		return Types::UnsignedChar;
 	if (std::is_same<T, wchar_t>::value)
-		return TYPES::WCHAR_T;
+		return Types::WcharT;
 	if (std::is_same<T, int>::value)
-		return TYPES::INT;
+		return Types::Int;
 	if (std::is_same<T, unsigned int>::value)
-		return TYPES::UNSIGNED_INT;
+		return Types::UnsignedInt;
 	if (std::is_same<T, short int>::value)
-		return TYPES::SHORT_INT;
+		return Types::ShortInt;
 	if (std::is_same<T, unsigned short int>::value)
-		return TYPES::UNSIGNED_SHORT_INT;
+		return Types::UnsignedShortInt;
 	if (std::is_same<T, long int>::value)
-		return TYPES::LONG_INT;
+		return Types::LongInt;
 	if (std::is_same<T, unsigned long int>::value)
-		return TYPES::UNSIGNED_LONG_INT;
+		return Types::UnsignedLongInt;
 	if (std::is_same<T, long long int>::value)
-		return TYPES::LONG_LONG_INT;
+		return Types::LongLongInt;
 	if (std::is_same<T, unsigned long long int>::value)
-		return TYPES::UNSIGNED_LONG_LONG_INT;
+		return Types::UnsignedLongLongInt;
 	if (std::is_same<T, float>::value)
-		return TYPES::FLOAT;
+		return Types::Float;
 	if (std::is_same<T, double>::value)
-		return TYPES::DOUBLE;
+		return Types::Double;
 	if (std::is_same<T, long double>::value)
-		return TYPES::LONG_DOUBLE;
+		return Types::LongDouble;
 	
-	return TYPES::UNDEFINED;
+	return Types::Undefined;
 }
 
 
@@ -77,36 +77,36 @@ public:
 	AwesomeType(const AwesomeType& other);
 	AwesomeType(AwesomeType&& other);
 
-	AwesomeType& operator = (const AwesomeType& other);
-	AwesomeType& operator=(AwesomeType&& other);
+	AwesomeType& operator= (const AwesomeType& other);
+	AwesomeType& operator= (AwesomeType&& other);
 
 	template <typename T>
 	T ReadValueAs();
 	static void DestroyObject(AwesomeType& value);
 	static void Swap(AwesomeType& first, AwesomeType& second);
-	TYPES GetType() { return m_type; }
+	Types GetType() { return type; }
 
 private:
-	std::array<char, 8> m_value;
-	TYPES m_type;
+	std::array<char, 8> value;
+	Types type;
 };
 
 template <typename T>
 AwesomeType::AwesomeType(T value)
-	: m_type(TypeDetector<T>())
+	: type(TypeDetector<T>())
 {
 	static_assert(!std::is_null_pointer<T>::value, "Invalid value! nullptr_t cannot be an input type");
 	static_assert(!std::is_void<T>::value, "Invalid value! void cannot be an input type");
 	static_assert((std::is_integral<T>::value || std::is_floating_point<T>::value), "Unsupported type");
-	memcpy(m_value.data(), &value, sizeof(T));
+	memcpy(this->value.data(), &value, sizeof(T));
 }
 
 template <typename T>
 T AwesomeType::ReadValueAs()
 {
-	if (TypeDetector<T>() == m_type)
+	if (TypeDetector<T>() == type)
 	{
-		return *(reinterpret_cast<T*>(m_value.data()));
+		return *(reinterpret_cast<T*>(value.data()));
 	}
 	throw BadCast();
 }

@@ -1,6 +1,6 @@
-#include <iostream>
 #include "Tests.h"
 #include "AwesomeType.h"
+#include <iostream>
 
 #define ARE_EQ( x, y) \
  if (x == y) std::cout << "Passed" <<std::endl; else { std::cout<< "Failed " <<std::endl;  return;} 
@@ -14,7 +14,7 @@ void TestCtor()
 
 	AwesomeType a(5);
 	ARE_EQ(5, a.ReadValueAs<int>());
-	ARE_EQ(TYPES::INT, a.GetType());
+	ARE_EQ(Types::Int, a.GetType());
 }
 
 void TestCopyCtor()
@@ -33,9 +33,9 @@ void TestMoveCtor()
 
 	AwesomeType a(3);
 	AwesomeType b = std::move(a);
-	ARE_EQ(a.GetType(), TYPES::UNDEFINED);
+	ARE_EQ(a.GetType(), Types::Undefined);
 	ARE_EQ(3, b.ReadValueAs<int>());
-	ARE_EQ(b.GetType(), TYPES::INT);
+	ARE_EQ(b.GetType(), Types::Int);
 }
 
 void TestAssignmentOperator()
@@ -57,14 +57,14 @@ void TestMoveOperator()
 	AwesomeType b('b');
 	a =std::move(b);
 	ARE_EQ(a.ReadValueAs<char>(),'b');
-	ARE_EQ(a.GetType(), TYPES::CHAR);
+	ARE_EQ(a.GetType(), Types::Char);
 }
 
 void TestTypeDetector()
 {
 	std::cout << "TestTypeDetector:" << std::endl;
 
-	ARE_EQ(TYPES::CHAR, TypeDetector<char>());
+	ARE_EQ(Types::Char, TypeDetector<char>());
 }
 
 void TestDestroy()
@@ -73,10 +73,10 @@ void TestDestroy()
 
 	AwesomeType ch('c');
 	ARE_EQ('c', ch.ReadValueAs<char>());
-	ARE_EQ(TYPES::CHAR, ch.GetType());
+	ARE_EQ(Types::Char, ch.GetType());
 
 	AwesomeType::DestroyObject(ch);
-	ARE_EQ(TYPES::UNDEFINED, ch.GetType());
+	ARE_EQ(Types::Undefined, ch.GetType());
 }
 
 void TestReadValueAs()
@@ -104,9 +104,9 @@ void TestSwap()
 	AwesomeType b(5);
 	AwesomeType::Swap(a, b);
 	ARE_EQ(5, a.ReadValueAs<int>());
-	ARE_EQ(TYPES::INT, a.GetType());
+	ARE_EQ(Types::Int, a.GetType());
 	ARE_EQ('a', b.ReadValueAs<char>());
-	ARE_EQ(TYPES::CHAR, b.GetType());
+	ARE_EQ(Types::Char, b.GetType());
 }
 
 void RunTests()

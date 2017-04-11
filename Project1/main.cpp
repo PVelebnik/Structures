@@ -1,7 +1,6 @@
-#include <iostream>
 #include "AwesomeType.h"
 #include "Tests.h"
-
+#include <iostream>
 
 
 void main()
