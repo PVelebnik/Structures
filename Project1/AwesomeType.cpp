@@ -1,7 +1,7 @@
 #include "AwesomeType.h"
 
 AwesomeType:: AwesomeType()
-	:type(Types::Undefined)
+	: type(Types::Undefined)
 	, value()
 {
 }

@@ -5,9 +5,6 @@
 #include <exception>
 #include <array>
 
-//#define ReturnIfSame(x, y) \
-//if(std::is_same<T, x>::value) return y
-
 enum class Types
 {
 	Undefined,
@@ -31,8 +28,6 @@ enum class Types
 template <typename T>
 Types TypeDetector()
 {
-	//ReturnIfSame(bool, TYPES::BOOL);
-
 	if (std::is_same<T, bool>::value)
 		return Types::Bool;
 	if (std::is_same<T, char>::value)
@@ -81,13 +76,14 @@ public:
 	AwesomeType& operator= (AwesomeType&& other);
 
 	template <typename T>
-	T ReadValueAs();
+	T ReadValueAs() const;
 	static void DestroyObject(AwesomeType& value);
 	static void Swap(AwesomeType& first, AwesomeType& second);
-	Types GetType() { return type; }
+	Types GetType() const{ return type; }
 
 private:
-	std::array<char, 8> value;
+	constexpr static size_t MAX_SUPPORTED_SIZE_TYPE=8;
+	std::array<char, MAX_SUPPORTED_SIZE_TYPE> value;
 	Types type;
 };
 
@@ -102,11 +98,11 @@ AwesomeType::AwesomeType(T value)
 }
 
 template <typename T>
-T AwesomeType::ReadValueAs()
+T AwesomeType::ReadValueAs() const
 {
 	if (TypeDetector<T>() == type)
 	{
-		return *(reinterpret_cast<T*>(value.data()));
+		return *(reinterpret_cast<const T*>(value.data()));
 	}
 	throw BadCast();
 }
